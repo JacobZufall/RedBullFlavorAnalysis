@@ -1,1 +1,1 @@
-<h1>Created with <img height=100px width=auto style="display:inline" src="resources/branding/DataSpell.png"></h1>
+<img height=100px width=auto style="display:inline" src="resources/branding/DataSpell.png">
