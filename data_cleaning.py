@@ -48,6 +48,9 @@ for i, v in rows:
     data.append(v.split(","))
 
 # This set of nested loops trims any whitespace off of both ends of the data.
+# TODO: Currently, "açaí" shows up as
+#  "aÃ§aÃ­" in the resulting JSON file. Consider adding in a conditional to change the two accented characters to
+#  non-accented characters.
 for x in range(0, len(data)):
     for y in range(0, len(data[x])):
         data[x][y] = data[x][y].strip()
