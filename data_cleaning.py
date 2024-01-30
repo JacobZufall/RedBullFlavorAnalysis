@@ -9,6 +9,7 @@ import json
 from _csv import reader
 from typing import TextIO
 
+# This should be the name of the desired CVS file with the filetype excluded.
 file_name: str = "20240130"
 
 file: TextIO = open(f"csv_data/{file_name}.csv")
@@ -32,5 +33,6 @@ for x in range(0, len(data)):
     for y in range(0, len(data[x])):
         data[x][y] = data[x][y].strip()
 
+# Exports to JSON to be used in data_visualization.R.
 with open(f"json_data/{file_name}.json", "w") as f:
     json.dump(data, f, indent=4)
