@@ -2,6 +2,25 @@
 data_cleaning.py
 
 This file turns the CSV file into a table and saves it to a JSON file to make the data easier to use.
+
+The end result is one table, where each index is a table of the 5 flavors a person picked. For example:
+[
+    [
+        "Cranberry",
+        "Coconut Berry",
+        "Juneberry",
+        "Pear",
+        "Pomegranate"
+    ],
+    [
+        "Original",
+        "Blueberry",
+        "Kiwi-Apple",
+        "Tangerine",
+        "Strawberry Apricot"
+    ]
+]
+Doing this allows me to analyze the groupings and do additional data analysis on the sample.
 """
 
 import csv
