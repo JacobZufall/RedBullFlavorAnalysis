@@ -4,22 +4,22 @@ data_cleaning.py
 This file turns the CSV file into a table and saves it to a JSON file to make the data easier to use.
 
 The end result is one table, where each index is a table of the 5 flavors a person picked. For example:
-[
-    [
-        "Cranberry",
-        "Coconut Berry",
-        "Juneberry",
-        "Pear",
-        "Pomegranate"
-    ],
-    [
-        "Original",
-        "Blueberry",
-        "Kiwi-Apple",
-        "Tangerine",
-        "Strawberry Apricot"
-    ]
-]
+{
+    "0": {
+        "0": "Cranberry",
+        "1": "Coconut Berry",
+        "2": "Juneberry",
+        "3": "Pear",
+        "4": "Pomegranate"
+    },
+    "1": {
+        "0": "Original",
+        "1": "Blueberry",
+        "2": "Kiwi-Apple",
+        "3": "Tangerine",
+        "4": "Strawberry Apricot"
+    },
+}
 Doing this allows me to analyze the groupings and do additional data analysis on the sample.
 """
 
@@ -72,19 +72,19 @@ for x in range(0, len(data)):
                 dict_row[y] = "Original"
 
             if data[x][y].lower() == "lychee" or data[x][y].lower() == "ocean blast (lychee)":
-                j = "Ocean Blast"
+                dict_row[y] = "Ocean Blast"
 
-        # For lime and limeade, I put the edition in parentheses to clarify. However, I want this removed for visual
-        # purposes.
-        if data[x][y].lower() == "lime (silver edition)":
-            j = "Lime"
+            # For lime and limeade, I put the edition in parentheses to clarify. However, I want this removed for visual
+            # purposes.
+            if data[x][y].lower() == "lime (silver edition)":
+                dict_row[y] = "Lime"
 
-        if data[x][y].lower() == "limeade (lime edition)":
-            j = "Limeade"
+            if data[x][y].lower() == "limeade (lime edition)":
+                dict_row[y] = "Limeade"
 
-        # For some reason this condition is never met.
-        if data[x][y] == "A\u00c3\u00a7a\u00c3\u00ad Berry":
-            j = "Açaí Berry"
+            # For some reason this condition is never met.
+            if data[x][y] == "A\u00a7a\u00ad Berry":
+                dict_row[y] = "Açaí Berry"
 
     data_dict[x] = dict_row
 
