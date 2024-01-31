@@ -57,41 +57,36 @@ for x in range(0, len(data)):
     for y in range(0, len(data[x])):
         data[x][y] = data[x][y].strip()
 
-# This converts the list into a dictionary. I'm not 100% sure if this is needed.
-for x in range(0, len(data)):
-    dict_row: dict[int:str] = {}
-
-    for y in range(0, len(data[x])):
-        dict_row[int(y)] = data[x][y]
-
-    data_dict[int(x)] = dict_row
-
 # I included an "Other" field in the survey in the event that I missed any flavors (which I did). However,
 # some people cannot read, because I explicitly said if you like a sugar-free version, just select the regular
 # variant. Yet, people still put "sugar-free" down. There's also the case where people aren't consistent with each
 # other, and that needs to be corrected to make the visuals work better in data_visualization.R.
-for i, v in data_dict.items():
-    for j, w in v.items():
-        # A few people made up their own flavors, and since I can't validate their claim, I must remove them.
-        if w.lower() == "sugar free":
-            j = "Original"
+for x in range(0, len(data)):
+    dict_row: dict[int:str] = {}
 
-        if w.lower() == "lychee" or w.lower() == "ocean blast (lychee)":
-            j = "Ocean Blast"
+    for y in range(0, len(data[x])):
+        if data[x][y] in valid_flavors:
+            dict_row[y] = data[x][y]
+        else:
+            if data[x][y].lower() == "sugar free":
+                dict_row[y] = "Original"
+
+            if data[x][y].lower() == "lychee" or data[x][y].lower() == "ocean blast (lychee)":
+                j = "Ocean Blast"
 
         # For lime and limeade, I put the edition in parentheses to clarify. However, I want this removed for visual
         # purposes.
-        if w.lower() == "lime (silver edition)":
+        if data[x][y].lower() == "lime (silver edition)":
             j = "Lime"
 
-        if w.lower() == "limeade (lime edition)":
+        if data[x][y].lower() == "limeade (lime edition)":
             j = "Limeade"
 
-        if w == "AÃ§aÃ­ Berry":
+        # For some reason this condition is never met.
+        if data[x][y] == "A\u00c3\u00a7a\u00c3\u00ad Berry":
             j = "Açaí Berry"
 
-        if w not in valid_flavors:
-            del j
+    data_dict[x] = dict_row
 
 # Exports to JSON to be used in data_visualization.R.
 with open(f"json_data/{file_name}.json", "w") as f:
