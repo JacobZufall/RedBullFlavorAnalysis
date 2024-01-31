@@ -24,9 +24,10 @@ Doing this allows me to analyze the groupings and do additional data analysis on
 """
 
 import csv
+from csv import reader
 import json
-from _csv import reader
 from typing import TextIO
+from valid_flavors import valid_flavors
 
 # This should be the name of the desired CVS file with the filetype excluded.
 file_name: str = "20240131"
@@ -65,7 +66,32 @@ for x in range(0, len(data)):
 
     data_dict[int(x)] = dict_row
 
-# TODO: Add in loop that fixes "other" variables (turns sugar-free into original).
+# I included an "Other" field in the survey in the event that I missed any flavors (which I did). However,
+# some people cannot read, because I explicitly said if you like a sugar-free version, just select the regular
+# variant. Yet, people still put "sugar-free" down. There's also the case where people aren't consistent with each
+# other, and that needs to be corrected to make the visuals work better in data_visualization.R.
+for i, v in data_dict.items():
+    for j, w in v.items():
+        # A few people made up their own flavors, and since I can't validate their claim, I must remove them.
+        if w.lower() == "sugar free":
+            j = "Original"
+
+        if w.lower() == "lychee" or w.lower() == "ocean blast (lychee)":
+            j = "Ocean Blast"
+
+        # For lime and limeade, I put the edition in parentheses to clarify. However, I want this removed for visual
+        # purposes.
+        if w.lower() == "lime (silver edition)":
+            j = "Lime"
+
+        if w.lower() == "limeade (lime edition)":
+            j = "Limeade"
+
+        if w == "AÃ§aÃ­ Berry":
+            j = "Açaí Berry"
+
+        if w not in valid_flavors:
+            del j
 
 # Exports to JSON to be used in data_visualization.R.
 with open(f"json_data/{file_name}.json", "w") as f:
