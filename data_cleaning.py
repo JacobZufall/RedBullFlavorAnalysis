@@ -36,6 +36,7 @@ csvreader: reader = csv.reader(file)
 
 rows: list[any] = []
 data: list[list[str]] = []
+data_dict: dict[int:[dict[int:str]]] = {}
 
 for row in csvreader:
     rows.append(row)
@@ -55,6 +56,17 @@ for x in range(0, len(data)):
     for y in range(0, len(data[x])):
         data[x][y] = data[x][y].strip()
 
+# This converts the list into a dictionary. I'm not 100% sure if this is needed.
+for x in range(0, len(data)):
+    dict_row: dict[int:str] = {}
+
+    for y in range(0, len(data[x])):
+        dict_row[int(y)] = data[x][y]
+
+    data_dict[int(x)] = dict_row
+
+# TODO: Add in loop that fixes "other" variables (turns sugar-free into original).
+
 # Exports to JSON to be used in data_visualization.R.
 with open(f"json_data/{file_name}.json", "w") as f:
-    json.dump(data, f, indent=4)
+    json.dump(data_dict, f, indent=4)
