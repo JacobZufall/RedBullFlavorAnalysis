@@ -29,7 +29,7 @@ from _csv import reader
 from typing import TextIO
 
 # This should be the name of the desired CVS file with the filetype excluded.
-file_name: str = "20240130"
+file_name: str = "20240131"
 
 file: TextIO = open(f"csv_data/{file_name}.csv")
 csvreader: reader = csv.reader(file)
