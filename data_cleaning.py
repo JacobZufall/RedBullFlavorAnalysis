@@ -23,6 +23,7 @@ The end result is one table, where each index is a table of the 5 flavors a pers
 Doing this allows me to analyze the groupings and do additional data analysis on the sample.
 """
 
+import os
 import csv
 from csv import reader
 import json
@@ -81,5 +82,9 @@ for x in range(0, len(data)):
 # other, and that needs to be corrected to make the visuals work better in data_visualization.R.
 
 # Exports to JSON to be used in data_visualization.R.
+new_path: str = "json_data"
+if not os.path.exists(new_path):
+    os.makedirs(new_path)
+
 with open(f"json_data/{file_name}.json", "w") as f:
     json.dump(data, f, indent=4)
