@@ -1,8 +1,8 @@
-install.packages("rjson")
-library("rjson")
+library("jsonlite")
 
 fileName <- "20240131"
 
 data <- fromJSON(file=paste0("json_data/", fileName, ".json"))
+
 
 print(data)
