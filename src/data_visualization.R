@@ -9,8 +9,7 @@ install.packages(c("wordcloud2", "rjson"))
 library("rjson")
 library("wordcloud2")
 
-file_name <- "20240131"
-json_data <- fromJSON(file = paste0("json_data/", file_name , ".json"))
+json_data <- fromJSON(file = paste("json_data/main_table.json"))
 
 main_df <- data.frame(
   ID = json_data[1],
