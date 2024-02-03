@@ -20,7 +20,7 @@ rows: list[any] = []
 
 valid_flavors: list[str] = [
     "Original",
-    "Açaí Berry",
+    "Acai Berry",
     "Arctic-Berry",
     "Beach Breeze",
     "Blueberry",
