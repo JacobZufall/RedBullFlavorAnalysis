@@ -2,32 +2,13 @@
 data_cleaning.py
 
 This file turns the CSV file into a table and saves it to a JSON file to make the data easier to use.
-
-The end result is one table, where each index is a table of the 5 flavors a person picked. For example:
-{
-    "0": {
-        "0": "Cranberry",
-        "1": "Coconut Berry",
-        "2": "Juneberry",
-        "3": "Pear",
-        "4": "Pomegranate"
-    },
-    "1": {
-        "0": "Original",
-        "1": "Blueberry",
-        "2": "Kiwi-Apple",
-        "3": "Tangerine",
-        "4": "Strawberry Apricot"
-    },
-}
-Doing this allows me to analyze the groupings and do additional data analysis on the sample.
 """
 
 import csv
+import os
 from csv import reader
 import json
 from typing import TextIO
-from valid_flavors import valid_flavors
 
 # This should be the name of the desired CVS file with the filetype excluded.
 file_name: str = "20240131"
@@ -36,10 +17,48 @@ file: TextIO = open(f"csv_data/{file_name}.csv")
 csvreader: reader = csv.reader(file)
 
 rows: list[any] = []
-data: list[list[str]] = []
+
+valid_flavors: list[str] = [
+    "Original",
+    "Açaí Berry",
+    "Arctic-Berry",
+    "Beach Breeze",
+    "Blueberry",
+    "Cactus Fruit",
+    "Cranberry",
+    "Coconut Berry",
+    "Dragon Fruit",
+    "Fig Apple",
+    "Grapefruit Twist",
+    "Juneberry",
+    "Kiwi-Apple",
+    "Lime",
+    "Limeade",
+    "Ocean Blast",
+    "Tangerine",
+    "Peach-Nectarine",
+    "Pear",
+    "Pear Cinnamon",
+    "Plum Twist",
+    "Pomegranate",
+    "Strawberry Apricot",
+    "Tropical",
+    "Watermelon"
+]
 
 for row in csvreader:
     rows.append(row)
+
+# I should consider condensing these tables.
+data: list[list[str]] = []
+json_data: dict[str:list[str]] = {
+    "id": [],
+    "flavor_1": [],
+    "flavor_2": [],
+    "flavor_3": [],
+    "flavor_4": [],
+    "flavor_5": []
+}
 
 for i, v in rows:
     # We don't need this included in the data.
@@ -48,38 +67,71 @@ for i, v in rows:
 
     data.append(v.split(","))
 
+# This trims the whitespace off of the data.
 for x in range(0, len(data)):
     for y in range(0, len(data[x])):
         data[x][y] = data[x][y].strip()
 
-        if not data[x][y] in valid_flavors:
-            if data[x][y].lower() == "sugar free":
-                data[x][y] = "Original"
 
-            if data[x][y].lower() == "lychee" or data[x][y].lower() == "ocean blast (lychee)":
-                data[x][y] = "Ocean Blast"
+def insert_data(input_data: str):
+    """
+    A very inefficient way to clean the data. Each condition specifies an observed mistake or spot where data needs
+    to be manually corrected. If no mistake is present, it'll insert the data as-is.
+    :param input_data: The data to be checked and corrected (if applicable).
+    :return: Nothing.
+    """
+    if input_data == "AÃ§aÃ­ Berry":
+        json_data[f"flavor_{y + 1}"].append("Acai Berry")
 
-            # For lime and limeade, I put the edition in parentheses to clarify. However, I want this removed for visual
-            # purposes.
-            if data[x][y].lower() == "lime (silver edition)":
-                data[x][y] = "Lime"
+    # Some people didn't follow instructions.
+    elif input_data.lower() == "sugar free":
+        json_data[f"flavor_{y + 1}"].append("Original")
 
-            if data[x][y].lower() == "limeade (lime edition)":
-                data[x][y] = "Limeade"
+    # This one is on me for forgetting it.
+    elif input_data == "Ocean Blast (Lychee)" or input_data == "Lychee":
+        json_data[f"flavor_{y + 1}"].append("Ocean Blast")
 
-            # TODO: Currently, "açaí" shows up as
-            #  "aÃ§aÃ­" in the resulting JSON file. Consider adding in a conditional to change the two accented
-            #  characters to non-accented characters.
+    # For lime and limeade, I added the edition in parentheses for clarification, but it needs to be removed.
+    elif input_data == "Lime (Silver Edition)":
+        json_data[f"flavor_{y + 1}"].append("Lime")
 
-            # For some reason this condition is never met.
-            if data[x][y] == "A\u00a7a\u00ad Berry":
-                data[x][y] = "Açaí Berry"
+    elif input_data == "Limeade (Lime Edition)":
+        json_data[f"flavor_{y + 1}"].append("Limeade")
 
-# I included an "Other" field in the survey in the event that I missed any flavors (which I did). However,
-# some people cannot read, because I explicitly said if you like a sugar-free version, just select the regular
-# variant. Yet, people still put "sugar-free" down. There's also the case where people aren't consistent with each
-# other, and that needs to be corrected to make the visuals work better in data_visualization.R.
+    else:
+        if input_data in valid_flavors:
+            json_data[f"flavor_{y + 1}"].append(input_data)
+
+
+for x in range(0, len(data)):
+
+    json_data["id"].append(x + 1)
+
+    for y in range(0, 5):
+        # People were requested to enter up to 5 flavors, but were permitted to do less than 5. In this case,
+        # we need to fill in "None" so that we know there's a blank space.
+        if not len(data[x]) < 5:
+            insert_data(data[x][y])
+
+        else:
+            # If there's less than 5, we need to insert "None" only where they didn't put one. For example,
+            # if they only selected two flavors, this will start inserting "None" the third time this loops around.
+            # It'll go to else for the first two loops, however.
+            if len(data[x]) < y + 1:
+                json_data[f"flavor_{y + 1}"].append("None")
+            else:
+                insert_data(data[x][y])
 
 # Exports to JSON to be used in data_visualization.R.
+new_path: str = "json_data"
+output: str = "export"
+
+if not os.path.exists(new_path):
+    os.makedirs(new_path)
+
+# This folder is used by data_visualization.R.
+if not os.path.exists(output):
+    os.makedirs(output)
+
 with open(f"json_data/{file_name}.json", "w") as f:
-    json.dump(data, f, indent=4)
+    json.dump(json_data, f, indent=4)
