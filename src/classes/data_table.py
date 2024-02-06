@@ -8,8 +8,7 @@ class DataTable:
 
         :param input_data:
         """
-        # Source data, remains untouched after initialization.
-        self.sdata: list[list[str]] = []
+        self.sdata: any = []
 
         # This loop takes the data from the CVS file and only puts the needed data into a new table.
         for i, v in input_data:

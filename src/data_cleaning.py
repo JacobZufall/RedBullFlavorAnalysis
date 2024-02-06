@@ -9,6 +9,7 @@ import csv
 from csv import reader
 from typing import TextIO
 from classes.red_bull_table import RedBullTable
+from classes.flavor_freq_table import FlavorFreqTable
 
 # This should be the name of the desired CVS file with the filetype excluded.
 file_name: str = "20240202"
@@ -27,3 +28,6 @@ if not os.path.exists(output):
 
 main_table: RedBullTable = RedBullTable(rows)
 main_table.save_json("main_table")
+
+frequency_table: FlavorFreqTable = FlavorFreqTable(rows)
+frequency_table.save_json("frequency_table")

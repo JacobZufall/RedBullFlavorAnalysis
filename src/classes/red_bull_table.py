@@ -30,7 +30,11 @@ class RedBullTable(DataTable):
         "Watermelon"
     ]
 
-    def __init__(self,  input_data: list[any]):
+    def __init__(self,  input_data: list[any]) -> None:
+        """
+
+        :param input_data: The CSV converted to list.
+        """
         super().__init__(input_data=input_data)
 
         self.fdata: dict[str:list[str]] = {
