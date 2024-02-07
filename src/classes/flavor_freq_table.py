@@ -13,10 +13,7 @@ class FlavorFreqTable(RedBullTable):
 
         for x in self.sdata:
             for y in self.sdata[x]:
-                if x == "id":
-                    continue
-
-                if y == "None":
+                if x == "id" or y == "None":
                     continue
 
                 if y not in self.fdata["word"]:
