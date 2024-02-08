@@ -8,8 +8,7 @@ class FlavorFreqTable(RedBullTable):
         :param input_data: The CSV file.
         """
         super().__init__(input_data=input_data)
-        print(self.sdata)
-        print(self.fdata)
+
         self.sdata: dict[str:list[str]] = self.fdata
         self.fdata: dict[str:list[str | int]] = {
             "word": [],

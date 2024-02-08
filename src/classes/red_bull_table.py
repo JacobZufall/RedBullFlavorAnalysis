@@ -31,7 +31,7 @@ class RedBullTable(DataTable):
         "Watermelon"
     ]
 
-    def __init__(self,  input_data: reader) -> None:
+    def __init__(self, input_data: reader) -> None:
         """
         :param input_data: The CSV file.
         """
