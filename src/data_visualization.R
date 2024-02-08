@@ -27,4 +27,4 @@ freq_df <- data.frame(
 )
 
 # For some reason it just puts the masking image over the word cloud.
-wordcloud2(data = freq_df, figPath = "resources/masking/bull.png", size = 1, color = "random-light", backgroundColor = "gray")
+wordcloud2(data = freq_df, size = 1, color = "random-light", backgroundColor = "gray")

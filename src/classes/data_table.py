@@ -1,17 +1,22 @@
-import os
 import json
+from csv import reader
 
 
 class DataTable:
-    def __init__(self, input_data: list[any]) -> None:
+    def __init__(self, input_data: reader) -> None:
         """
-
-        :param input_data:
+        A basic class that takes data from a CSV file and stores it in a row. It is then formatted to removed
+        non-data text.
+        :param input_data: The CSV file to be formatted.
         """
+        self.rows: list[any] = []
         self.sdata: any = []
 
-        # This loop takes the data from the CVS file and only puts the needed data into a new table.
-        for i, v in input_data:
+        for row in input_data:
+            self.rows.append(row)
+
+        # This loop takes the data from the CSV file and only puts the needed data into a new table.
+        for i, v in self.rows:
             if v == "What are your top 5 Red Bull flavors?":
                 continue
 
@@ -25,16 +30,12 @@ class DataTable:
         # Formatted data, manipulated by different classes/instances.
         self.fdata: any = self.sdata
 
-    def save_json(self, file_name: str) -> None:
+    def save_json(self, file_name: str, path: str = "json_data/") -> None:
         """
-        Saves self.fdata to a JSON file in /json_data/.
+        Saves self.fdata to a JSON file, in /json_data/ by default.
         :param file_name: The name of the file the data is being saved to.
+        :param path: Where the JSON file is saved to.
         :return: Nothing
         """
-        new_path: str = "json_data"
-
-        if not os.path.exists(new_path):
-            os.makedirs(new_path)
-
-        with open(f"json_data/{file_name}.json", "w") as file:
+        with open(f"{path}{file_name}.json", "w") as file:
             json.dump(self.fdata, file, indent=4)

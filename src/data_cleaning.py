@@ -11,23 +11,21 @@ from typing import TextIO
 from classes.red_bull_table import RedBullTable
 from classes.flavor_freq_table import FlavorFreqTable
 
-# This should be the name of the desired CVS file with the filetype excluded.
+# This should be the name of the desired CSV file (with the filetype excluded).
 file_name: str = "20240202"
 
 file: TextIO = open(f"csv_data/{file_name}.csv")
 csvreader: reader = csv.reader(file)
+# Folders used to store data that are excluded from Git.
+folders: list[str] = ["json_data", "export"]
 
-rows: list[any] = []
-for row in csvreader:
-    rows.append(row)
 
-# This folder is used by data_visualization.R.
-output: str = "export"
-if not os.path.exists(output):
-    os.makedirs(output)
+for folder in folders:
+    if not os.path.exists(folder):
+        os.makedirs(folder)
 
-main_table: RedBullTable = RedBullTable(rows)
+main_table: RedBullTable = RedBullTable(csvreader)
 main_table.save_json("main_table")
 
-frequency_table: FlavorFreqTable = FlavorFreqTable(rows)
+frequency_table: FlavorFreqTable = FlavorFreqTable(csvreader)
 frequency_table.save_json("frequency_table")

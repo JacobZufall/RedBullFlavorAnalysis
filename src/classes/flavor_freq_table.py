@@ -1,12 +1,17 @@
 from src.classes.red_bull_table import RedBullTable
+from csv import reader
 
 
 class FlavorFreqTable(RedBullTable):
-    def __init__(self, input_data: list[any]) -> None:
+    def __init__(self, input_data: reader) -> None:
+        """
+        :param input_data: The CSV file.
+        """
         super().__init__(input_data=input_data)
-
-        self.sdata = self.fdata
-        self.fdata = {
+        print(self.sdata)
+        print(self.fdata)
+        self.sdata: dict[str:list[str]] = self.fdata
+        self.fdata: dict[str:list[str | int]] = {
             "word": [],
             "freq": []
         }
@@ -23,4 +28,3 @@ class FlavorFreqTable(RedBullTable):
                     self.fdata["freq"][self.fdata["word"].index(y)] += 1
                 except IndexError:
                     self.fdata["freq"].append(1)
-
