@@ -1,5 +1,4 @@
-from src.classes.data_table import DataTable
-from csv import reader
+from src.classes.DataTable import DataTable
 
 
 class RedBullTable(DataTable):
@@ -31,11 +30,8 @@ class RedBullTable(DataTable):
         "Watermelon"
     ]
 
-    def __init__(self, input_data: reader) -> None:
-        """
-        :param input_data: The CSV file.
-        """
-        super().__init__(input_data=input_data)
+    def __init__(self, file: str) -> None:
+        super().__init__(file=file)
 
         self.fdata: dict[str:list[int | str]] = {
             "id": [],

@@ -1,18 +1,21 @@
 import json
+import csv
 from csv import reader
 
 
 class DataTable:
-    def __init__(self, input_data: reader) -> None:
+    def __init__(self, file: str) -> None:
         """
         A basic class that takes data from a CSV file and stores it in a row. It is then formatted to removed
         non-data text.
-        :param input_data: The CSV file to be formatted.
+        :param file: The path of the CSV file to read.
         """
         self.rows: list[any] = []
         self.sdata: any = []
 
-        for row in input_data:
+        csv_reader: reader = csv.reader(open(file))
+
+        for row in csv_reader:
             self.rows.append(row)
 
         # This loop takes the data from the CSV file and only puts the needed data into a new table.

@@ -1,13 +1,9 @@
-from src.classes.red_bull_table import RedBullTable
-from csv import reader
+from src.classes.RedBullTable import RedBullTable
 
 
 class FlavorFreqTable(RedBullTable):
-    def __init__(self, input_data: reader) -> None:
-        """
-        :param input_data: The CSV file.
-        """
-        super().__init__(input_data=input_data)
+    def __init__(self, file: str) -> None:
+        super().__init__(file=file)
 
         self.sdata: dict[str:list[str]] = self.fdata
         self.fdata: dict[str:list[str | int]] = {
