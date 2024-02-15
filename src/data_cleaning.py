@@ -11,13 +11,16 @@ from classes.FlavorFreqTable import FlavorFreqTable
 # This should be the name of the desired CSV file (with the filetype excluded).
 file_name: str = "20240202"
 # Folders used to store data that are excluded from Git.
-folders: list[str] = ["json_data", "export"]
+folders: list[str] = ["../json_data", "../export"]
 
 for folder in folders:
-    if not os.path.exists(folder):
-        os.makedirs(folder)
+    try:
+        os.mkdir(folder)
+    except FileExistsError:
+        pass
 
-path: str = f"csv_data/{file_name}.csv"
+
+path: str = f"../csv_data/{file_name}.csv"
 
 main_table: RedBullTable = RedBullTable(path)
 main_table.save_json("main_table")

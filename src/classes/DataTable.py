@@ -40,5 +40,5 @@ class DataTable:
         :param path: Where the JSON file is saved to.
         :return: Nothing
         """
-        with open(f"{path}{file_name}.json", "w") as file:
+        with open(f"../{path}{file_name}.json", "w") as file:
             json.dump(self.fdata, file, indent=4)
