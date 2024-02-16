@@ -86,6 +86,9 @@ class RedBullTable(DataTable):
         elif check_data == "Limeade (Lime Edition)":
             self.fdata[f"flavor_{loop_var + 1}"].append("Limeade")
 
+        elif check_data == "Blue Raspberry":
+            self.fdata[f"flavor_{loop_var + 1}"].append("Arctic-Berry")
+
         else:
             if check_data in self.valid_flavors:
                 self.fdata[f"flavor_{loop_var + 1}"].append(check_data)
