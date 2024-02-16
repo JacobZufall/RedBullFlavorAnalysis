@@ -1,4 +1,3 @@
-import json
 import csv
 from csv import reader
 
@@ -32,13 +31,3 @@ class DataTable:
 
         # Formatted data, manipulated by different classes/instances.
         self.fdata: any = self.sdata
-
-    def save_json(self, file_name: str, path: str = "json_data/") -> None:
-        """
-        Saves self.fdata to a JSON file, in /json_data/ by default.
-        :param file_name: The name of the file the data is being saved to.
-        :param path: Where the JSON file is saved to.
-        :return: Nothing
-        """
-        with open(f"../{path}{file_name}.json", "w") as file:
-            json.dump(self.fdata, file, indent=4)
